@@ -1,48 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import API from "../services/api";
-import Logo from "../assets/react.svg";
 
-function Register() {
+function CompleteProfile() {
     const [form, setForm] = useState({
-        name: "",
-        email: "",
-        password: "",
-        role: "",
+        passingYear: "",
+        company: "",
+        experience: "",
+        location: "",
+        linkedin: "",
     });
 
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleRegister = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
-        // QUICK VALIDATION
-        if (!form.name || !form.email || !form.password || !form.role) {
-            setError("All fields are required.");
+        if (!form.passingYear || !form.company || !form.experience || !form.location) {
+            setError("Please fill all required fields.");
+            setLoading(false);
             return;
         }
 
         try {
-            const res = await API.post("/auth/register", form);
+            await API.post("/alumni/profile", {
+                passingYear: parseInt(form.passingYear),
+                company: form.company,
+                experience: parseInt(form.experience),
+                location: form.location,
+                linkedin: form.linkedin,
+            });
 
-            // Save token immediately
-            localStorage.setItem("token", res.data.token);
+            // Alumni is already authenticated from registration
+            window.location.replace("/dashboard");
 
-            const user = res.data.user;
-
-            // REDIRECTS BASED ON ROLE
-            if (user.role === "alumni") {
-                window.location.replace("/complete-profile");
-            } else if (user.role === "admin") {
-                window.location.replace("/admin/dashboard");
-            } else {
-                window.location.replace("/dashboard");
-            }
 
         } catch (err) {
             console.error(err);
@@ -50,9 +47,11 @@ function Register() {
             if (err.response?.data?.message) {
                 setError(err.response.data.message);
             } else {
-                setError("Registration failed. Try again.");
+                setError("Failed to save profile. Try again.");
             }
         }
+
+        setLoading(false);
     };
 
     return (
@@ -61,28 +60,28 @@ function Register() {
 
                 <div className="px-6 py-6">
 
-                    <div className="flex justify-center">
-                        <img src={Logo} className="h-14 w-14" alt="logo" />
-                    </div>
-
-                    <h3 className="mt-4 text-xl font-semibold text-center text-onSurface">
-                        Create Your Account
+                    <h3 className="text-xl font-semibold text-center text-onSurface">
+                        Complete Your Alumni Profile
                     </h3>
 
-                    {/* ERROR MESSAGE */}
+                    <p className="mt-1 text-center text-gray-600 text-sm">
+                        Tell us a bit about your professional journey
+                    </p>
+
+                    {/* ERROR */}
                     {error && (
                         <div className="mt-3 text-center text-red-600 text-sm font-medium">
                             {error}
                         </div>
                     )}
 
-                    <form onSubmit={handleRegister} className="mt-6">
+                    <form onSubmit={handleSubmit} className="mt-6">
 
                         <input
-                            type="text"
-                            name="name"
-                            placeholder="Full Name"
-                            value={form.name}
+                            type="number"
+                            name="passingYear"
+                            placeholder="Passing Year"
+                            value={form.passingYear}
                             onChange={handleChange}
                             className="
                                 w-full mt-2 px-4 py-3 
@@ -94,10 +93,10 @@ function Register() {
                         />
 
                         <input
-                            type="email"
-                            name="email"
-                            placeholder="Email ID"
-                            value={form.email}
+                            type="text"
+                            name="company"
+                            placeholder="Company"
+                            value={form.company}
                             onChange={handleChange}
                             className="
                                 w-full mt-4 px-4 py-3 
@@ -109,10 +108,10 @@ function Register() {
                         />
 
                         <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={form.password}
+                            type="number"
+                            name="experience"
+                            placeholder="Years of Experience"
+                            value={form.experience}
                             onChange={handleChange}
                             className="
                                 w-full mt-4 px-4 py-3 
@@ -123,49 +122,51 @@ function Register() {
                             "
                         />
 
-                        <select
-                            name="role"
-                            value={form.role}
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="Current Location"
+                            value={form.location}
                             onChange={handleChange}
                             className="
                                 w-full mt-4 px-4 py-3 
                                 bg-white border border-outline rounded-xl 
-                                text-onSurface
+                                text-onSurface placeholder-gray-500
                                 focus:border-primary focus:ring-2 focus:ring-primary/40 
                                 outline-none transition
                             "
-                        >
-                            <option value="">Select Role</option>
-                            <option value="student">Student</option>
-                            <option value="alumni">Alumni</option>
-                            <option value="admin">Admin</option>
-                        </select>
+                        />
+
+                        <input
+                            type="text"
+                            name="linkedin"
+                            placeholder="LinkedIn URL (optional)"
+                            value={form.linkedin}
+                            onChange={handleChange}
+                            className="
+                                w-full mt-4 px-4 py-3 
+                                bg-white border border-outline rounded-xl 
+                                text-onSurface placeholder-gray-500
+                                focus:border-primary focus:ring-2 focus:ring-primary/40 
+                                outline-none transition
+                            "
+                        />
 
                         <button
                             type="submit"
-                            className="
+                            disabled={loading}
+                            className={`
                                 mt-5 w-full py-3 
                                 text-sm font-medium 
                                 text-white bg-primary rounded-xl 
                                 hover:bg-primary/80 transition
-                            "
+                                ${loading ? "opacity-70 cursor-not-allowed" : ""}
+                            `}
                         >
-                            Register
+                            {loading ? "Saving..." : "Save Profile"}
                         </button>
+
                     </form>
-                </div>
-
-                <div className="py-4 bg-surfaceLow text-center">
-                    <span className="text-sm text-onSurface">
-                        Already have an account?
-                    </span>
-
-                    <Link
-                        to="/"
-                        className="mx-1 text-sm font-bold text-primary hover:underline"
-                    >
-                        Login
-                    </Link>
                 </div>
 
             </div>
@@ -173,4 +174,4 @@ function Register() {
     );
 }
 
-export default Register;
+export default CompleteProfile;

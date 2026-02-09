@@ -1,30 +1,57 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../services/api";
 import Logo from "../assets/react.svg";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError("");
 
-        const res = await API.post("/auth/login", {
-            email,
-            password,
-        });
+        // Simple validation
+        if (!email || !password) {
+            setError("Email and password are required.");
+            return;
+        }
 
-        localStorage.setItem("token", res.data.token);
-        window.location.href = "/dashboard";
+        try {
+            const res = await API.post("/auth/login", { email, password });
+
+            // Save token
+            localStorage.setItem("token", res.data.token);
+
+            const role = res.data.user.role;
+
+            // Role-based redirects
+            if (role === "admin") {
+                window.location.replace("/admin/dashboard");
+            } else {
+                window.location.replace("/dashboard");
+            }
+
+        } catch (err) {
+            console.error(err);
+
+            // Backend-friendly error display
+            if (err.response?.data?.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("Login failed. Please try again.");
+            }
+        }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
-            {/* Card */}
+
             <div className="w-full max-w-sm mx-auto overflow-hidden rounded-2xl shadow-md bg-surface border border-outline">
 
                 <div className="px-6 py-6">
-                    {/* Logo */}
+
                     <div className="flex justify-center">
                         <img src={Logo} className="h-14 w-14" alt="logo" />
                     </div>
@@ -37,8 +64,15 @@ function Login() {
                         Login to continue
                     </p>
 
+                    {/* ERROR */}
+                    {error && (
+                        <div className="mt-3 text-center text-red-600 text-sm font-medium">
+                            {error}
+                        </div>
+                    )}
+
                     <form onSubmit={handleLogin} className="mt-6">
-                        {/* Email */}
+
                         <div className="w-full">
                             <input
                                 type="email"
@@ -55,7 +89,6 @@ function Login() {
                             />
                         </div>
 
-                        {/* Password */}
                         <div className="w-full mt-4">
                             <input
                                 type="password"
@@ -68,11 +101,10 @@ function Login() {
                                     text-onSurface placeholder-gray-500
                                     focus:border-primary focus:ring-2 focus:ring-primary/40 
                                     outline-none transition
-                            "
+                                "
                             />
                         </div>
 
-                        {/* Actions */}
                         <div className="mt-5 flex items-center justify-between">
                             <a
                                 href="#"
@@ -82,33 +114,33 @@ function Login() {
                             </a>
 
                             <button
-                            type="submit"
-                            className="
-                                px-6 py-2.5 
-                                text-sm font-medium 
-                                text-white bg-primary rounded-xl 
-                                hover:bg-primary/80 
-                                transition-colors
+                                type="submit"
+                                className="
+                                    px-6 py-2.5 
+                                    text-sm font-medium 
+                                    text-white bg-primary rounded-xl 
+                                    hover:bg-primary/80 
+                                    transition-colors
                                 "
                             >
                                 Login
                             </button>
                         </div>
+
                     </form>
                 </div>
 
-                {/* Footer */}
                 <div className="py-4 bg-surfaceLow text-center">
                     <span className="text-sm text-onSurface">
                         Don't have an account?
                     </span>
 
-                    <a
-                        href="/register"
+                    <Link
+                        to="/register"
                         className="mx-1 text-sm font-bold text-primary hover:underline"
                     >
                         Sign up
-                    </a>
+                    </Link>
                 </div>
 
             </div>

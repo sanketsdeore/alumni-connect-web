@@ -15,16 +15,16 @@ module.exports = {
 
         background: "#F6ECF8", 
 
-        surface: "#EDE0F0",      // darker lavender card
-        surfaceLow: "#E8D9EC",   // slightly darker footer
+        surface: "#EDE0F0",      
+        surfaceLow: "#E8D9EC",   
 
-        // Border color (slightly deeper MD3 outline)
-        outline: "#B9AFC0",      // darker than CCC4CE
+        
+        outline: "#B9AFC0",      
 
-        // Error (unchanged, MD3 standard)
+        
         error: "#BA1A1A",
 
-        // Text colors
+        
         onBackground: "#1A171D",
         onSurface: "#1A171D",
       },
