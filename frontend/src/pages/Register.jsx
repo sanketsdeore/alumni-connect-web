@@ -30,7 +30,7 @@ function Register() {
         try {
             const res = await API.post("/auth/register", form);
 
-            // Save token immediately
+            // Save token
             localStorage.setItem("token", res.data.token);
 
             const user = res.data.user;

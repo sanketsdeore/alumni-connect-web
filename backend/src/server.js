@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import alumniRoutes from "./routes/alumniRoutes.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/alumni", alumniRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");
