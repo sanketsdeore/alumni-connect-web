@@ -7,7 +7,7 @@ export const createProfile = async (req, res) => {
 
         const { passingYear, company, experience, location, linkedin } = req.body;
 
-        const userId = req.user.userId; // from JWT middleware
+        const userId = req.user.userId;
 
         const profile = await prisma.alumniProfile.create({
             data: {
