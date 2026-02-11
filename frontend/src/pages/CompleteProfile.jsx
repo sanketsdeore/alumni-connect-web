@@ -38,7 +38,7 @@ function CompleteProfile() {
             });
 
             // Alumni is already authenticated from registration
-            window.location.replace("/dashboard");
+            window.location.replace("/home");
 
 
         } catch (err) {

@@ -21,8 +21,9 @@ function Login() {
         try {
             const res = await API.post("/auth/login", { email, password });
 
-            // Save token
+            localStorage.setItem("id", res.data.user.id);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("role", res.data.user.role);
 
             const role = res.data.user.role;
 
@@ -30,7 +31,7 @@ function Login() {
             if (role === "admin") {
                 window.location.replace("/admin/dashboard");
             } else {
-                window.location.replace("/dashboard");
+                window.location.replace("/home");
             }
 
         } catch (err) {

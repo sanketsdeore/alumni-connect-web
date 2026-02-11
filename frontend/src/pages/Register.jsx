@@ -41,7 +41,7 @@ function Register() {
             } else if (user.role === "admin") {
                 window.location.replace("/admin/dashboard");
             } else {
-                window.location.replace("/dashboard");
+                window.location.replace("/home");
             }
 
         } catch (err) {
