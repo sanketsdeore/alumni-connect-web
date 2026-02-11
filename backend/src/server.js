@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import alumniRoutes from "./routes/alumniRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import storyRoutes from "./routes/storyRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +19,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/alumni", alumniRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/stories", storyRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

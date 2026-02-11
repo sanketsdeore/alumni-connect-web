@@ -16,6 +16,8 @@ model User {
   createdAt DateTime @default(now())
 
   alumniProfile AlumniProfile?
+
+  stories Story[]
 }
 
 model AlumniProfile {
@@ -51,4 +53,6 @@ model Story {
   title     String
   content   String
   authorId  Int
+
+  author User @relation(fields: [authorId], references: [id])
 }
