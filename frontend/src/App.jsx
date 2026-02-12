@@ -7,6 +7,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AlumniNetwork from "./pages/AlumniNetwork";
+import JobBoard from "./pages/JobBoard";
 
 function App() {
 
@@ -38,6 +39,18 @@ function App() {
               <>
                 <Navbar />
                 <AlumniNetwork />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/jobs"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar />
+                <JobBoard />
               </>
             </ProtectedRoute>
           }

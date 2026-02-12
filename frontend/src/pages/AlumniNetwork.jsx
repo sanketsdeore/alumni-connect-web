@@ -42,7 +42,7 @@ const StoryCard = ({ story, onDelete }) => {
             <p className="text-xs text-gray-500 mb-2">
                 by {story.author?.name}
             </p>
-            <p className="text-sm text-gray-600">{story.content}</p>
+            <p className="text-sm text-gray-600 whitespace-pre-line">{story.content}</p>
 
             {id === story.authorId && (
                 <button
@@ -61,12 +61,19 @@ const AlumniNetwork = () => {
     const [alumni, setAlumni] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [search, setSearch] = useState("")
+
     const [stories, setStories] = useState([])
 
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
+    const filteredAlumni = alumni.filter((a) =>
+        a.user.name.toLowerCase().includes(search.toLowerCase()) ||
+        a.company.toLowerCase().includes(search.toLowerCase()) ||
+        a.location.toLowerCase().includes(search.toLowerCase())
+    );
 
     const handleAddStory = async () => {
         try {
@@ -85,6 +92,8 @@ const AlumniNetwork = () => {
     };
 
     const handleDeleteStory = async (id) => {
+        if (!window.confirm("Delete this story?")) return;
+
         try {
             await API.delete(`/stories/${id}`);
 
@@ -98,7 +107,6 @@ const AlumniNetwork = () => {
         const fetchStories = async () => {
             try {
                 const res = await API.get("/stories");
-                console.log(res.data);
                 setStories(res.data);
             } catch (err) {
                 console.error("Error fetching stories:", err);
@@ -125,14 +133,16 @@ const AlumniNetwork = () => {
 
     return (
         <>
-            <div className='alumni-network grid grid-cols-[60%_40%] gap-6 mt-24 m-10'>
-                <div className='alumni-container bg-purple-100 p-6 rounded'>
+            <div className='alumni-network h-[80vh] grid grid-cols-[60%_40%] gap-6 mt-24 m-10 overflow-hidden'>
+                <div className='alumni-container bg-purple-100 p-6 rounded overflow-y-auto scrollbar-thin'>
                     <h1 className="text-2xl font-bold">Alumni Network</h1>
                     <p className="mt-1 text-gray-600">Connect with fellow alumni.</p>
 
                     <input
                         type="text"
                         placeholder="Search alumni..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         className="mt-4 p-2 border rounded w-full max-w-md"
                     />
 
@@ -140,23 +150,25 @@ const AlumniNetwork = () => {
                         {loading ? (
                             <p>Loading alumni...</p>
                         ) : (
-                            alumni.map((a) => (
+                            filteredAlumni.map((a) => (
                                 <AlumniCard key={a.id} alumni={a} />
                             ))
                         )}
                     </div>
                 </div>
 
-                <div className="stories-container bg-purple-100 p-6 rounded mr-4">
-                    <h2 className="text-2xl font-bold">Alumni Stories</h2>
+                <div className="stories-container bg-purple-100 p-6 rounded mr-6 overflow-y-auto scrollbar-thin">
+                    <h2 className="text-2xl font-bold">Success Stories</h2>
                     <p className="mt-1 text-gray-600">Read inspiring stories from our alumni.</p>
                     <div className="my-4">
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-                        >
-                            Add your Story
-                        </button>
+                        {localStorage.getItem("role") === "alumni" && (
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                            >
+                                Add your Story
+                            </button>
+                        )}
 
                         {stories.map((s) => (
                             <StoryCard key={s.id} story={s} onDelete={handleDeleteStory} />
