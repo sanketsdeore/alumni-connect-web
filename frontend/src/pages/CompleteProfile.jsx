@@ -36,8 +36,7 @@ function CompleteProfile() {
                 location: form.location,
                 linkedin: form.linkedin,
             });
-
-            // Alumni is already authenticated from registration
+            
             window.location.replace("/home");
 
 
@@ -67,8 +66,7 @@ function CompleteProfile() {
                     <p className="mt-1 text-center text-gray-600 text-sm">
                         Tell us a bit about your professional journey
                     </p>
-
-                    {/* ERROR */}
+                    
                     {error && (
                         <div className="mt-3 text-center text-red-600 text-sm font-medium">
                             {error}

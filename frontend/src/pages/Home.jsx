@@ -46,14 +46,14 @@ export default function Home() {
         title="Share Your Story"
         subtitle="Inspire others by sharing your journey and achievements."
         btnText="Share Your Story"
-        onClick={() => window.location.replace("/alumni-network")}
+        onClick={() => window.location.replace("/network")}
       />
       <Section
         image="https://plus.unsplash.com/premium_photo-1681140560805-de6115554023"
         title="Give Back"
         subtitle="Support college initiatives and student projects."
         btnText="Donate Now"
-        onClick={() => window.location.replace("/donate")}
+        onClick={() => window.location.replace("/donations")}
       />
       <Section
         image="https://plus.unsplash.com/premium_photo-1691873264214-e757b6a358f3"

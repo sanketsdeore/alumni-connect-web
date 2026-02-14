@@ -6,6 +6,9 @@ import alumniRoutes from "./routes/alumniRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import storyRoutes from "./routes/storyRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
+import donationRoutes from "./routes/donationRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +26,9 @@ app.use("/api/alumni", alumniRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/stories", storyRoutes);
 app.use("/api/openings", jobRoutes);
+app.use("/api/donations", donationRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

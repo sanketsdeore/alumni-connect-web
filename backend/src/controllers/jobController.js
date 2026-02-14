@@ -33,7 +33,7 @@ export const createOpening = async (req, res) => {
 export const deleteOpening = async (req, res) => {
   try {
     const openingId = Number(req.params.id);
-    const userId = req.user.userId;
+    const userId = req.user?.userId || req.user?.id;
 
     const opening = await prisma.opening.findUnique({
       where: { id: openingId }
@@ -43,7 +43,18 @@ export const deleteOpening = async (req, res) => {
       return res.status(404).json({ message: "Opening not found" });
     }
 
-    if (opening.postedBy !== userId) {
+    // Fetch user role
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Allow delete if poster OR admin
+    if (opening.postedBy !== userId && user.role !== "admin") {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -58,3 +69,4 @@ export const deleteOpening = async (req, res) => {
     res.status(500).json({ message: "Error deleting opening" });
   }
 };
+

@@ -24,7 +24,7 @@ export const createStory = async (req, res) => {
 export const deleteStory = async (req, res) => {
   try {
     const storyId = Number(req.params.id);
-    const userId = req.user.userId;
+    const userId = req.user?.userId || req.user?.id;
 
     const story = await prisma.story.findUnique({
       where: { id: storyId }
@@ -34,8 +34,21 @@ export const deleteStory = async (req, res) => {
       return res.status(404).json({ message: "Story not found" });
     }
 
-    if (story.authorId !== userId) {
-      return res.status(403).json({ message: "Not authorized to delete this story" });
+    // Fetch user role
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Allow delete if author OR admin
+    if (story.authorId !== userId && user.role !== "admin") {
+      return res.status(403).json({
+        message: "Not authorized to delete this story"
+      });
     }
 
     await prisma.story.delete({
@@ -49,6 +62,7 @@ export const deleteStory = async (req, res) => {
     res.status(500).json({ message: "Error deleting story" });
   }
 };
+
 
 export const getStories = async (req, res) => {
   try {

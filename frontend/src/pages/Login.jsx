@@ -12,7 +12,6 @@ function Login() {
         e.preventDefault();
         setError("");
 
-        // Simple validation
         if (!email || !password) {
             setError("Email and password are required.");
             return;
@@ -27,7 +26,6 @@ function Login() {
 
             const role = res.data.user.role;
 
-            // Role-based redirects
             if (role === "admin") {
                 window.location.replace("/admin/dashboard");
             } else {
@@ -37,7 +35,6 @@ function Login() {
         } catch (err) {
             console.error(err);
 
-            // Backend-friendly error display
             if (err.response?.data?.message) {
                 setError(err.response.data.message);
             } else {
@@ -65,7 +62,6 @@ function Login() {
                         Login to continue
                     </p>
 
-                    {/* ERROR */}
                     {error && (
                         <div className="mt-3 text-center text-red-600 text-sm font-medium">
                             {error}
