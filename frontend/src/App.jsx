@@ -8,6 +8,9 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AlumniNetwork from "./pages/AlumniNetwork";
 import JobBoard from "./pages/JobBoard";
+import DonationPage from "./pages/DonationPage";
+import EventsPage from "./pages/EventsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
 
@@ -56,10 +59,49 @@ function App() {
           }
         />
 
+        <Route 
+          path="/donations" 
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar/>
+                <DonationPage />
+              </>
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navbar />
+                <EventsPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <>
+                <ProfilePage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+
+
         <Route
           path="/admin/dashboard"
           element={
-            <AdminDashboard />
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
           }
         />
 

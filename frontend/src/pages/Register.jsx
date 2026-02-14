@@ -21,7 +21,6 @@ function Register() {
         e.preventDefault();
         setError("");
 
-        // QUICK VALIDATION
         if (!form.name || !form.email || !form.password || !form.role) {
             setError("All fields are required.");
             return;
@@ -30,12 +29,10 @@ function Register() {
         try {
             const res = await API.post("/auth/register", form);
 
-            // Save token
             localStorage.setItem("token", res.data.token);
 
             const user = res.data.user;
 
-            // REDIRECTS BASED ON ROLE
             if (user.role === "alumni") {
                 window.location.replace("/complete-profile");
             } else if (user.role === "admin") {
@@ -69,7 +66,6 @@ function Register() {
                         Create Your Account
                     </h3>
 
-                    {/* ERROR MESSAGE */}
                     {error && (
                         <div className="mt-3 text-center text-red-600 text-sm font-medium">
                             {error}

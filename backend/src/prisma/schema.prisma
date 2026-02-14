@@ -15,19 +15,19 @@ model User {
   role      String
   createdAt DateTime @default(now())
 
-  alumniProfile AlumniProfile?
-
-  stories Story[]
+  alumniProfile      AlumniProfile?
+  stories            Story[]
+  eventRegistrations EventRegistration[]
 }
 
 model AlumniProfile {
-  id           Int    @id @default(autoincrement())
-  userId       Int    @unique
-  passingYear  Int
-  company      String
-  experience   Int
-  location     String
-  linkedin     String?
+  id          Int     @id @default(autoincrement())
+  userId      Int     @unique
+  passingYear Int
+  company     String
+  experience  Int
+  location    String
+  linkedin    String?
 
   user User @relation(fields: [userId], references: [id])
 }
@@ -37,11 +37,28 @@ model Event {
   title       String
   description String
   date        DateTime
+  time        String
+  venue       String
   createdBy   Int
+  createdAt   DateTime @default(now())
+  alumniOnly  Boolean  @default(false)
+
+  registrations EventRegistration[]
+}
+
+model EventRegistration {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  eventId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
 }
 
 model Opening {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   title       String
   company     String
   description String
@@ -51,10 +68,20 @@ model Opening {
 }
 
 model Story {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  authorId  Int
+  id       Int    @id @default(autoincrement())
+  title    String
+  content  String
+  authorId Int
 
   author User @relation(fields: [authorId], references: [id])
+}
+
+model DonationProject {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  targetAmount Float
+  link         String? // ✅ NEW
+  createdAt    DateTime @default(now())
+  createdBy    Int
 }

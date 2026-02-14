@@ -5,6 +5,10 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
+    const handleProfileClick = () => {
+        navigate("/profile")
+    }
+
     const handleLogout = () => {
         localStorage.removeItem("id");
         localStorage.removeItem("token");
@@ -22,7 +26,7 @@ const Navbar = () => {
                 <li className="font-semibold hover:text-purple-200 transition"><a href="/home">Home</a></li>
                 <li className="font-semibold hover:text-purple-200 transition"><a href="/network">Alumni Network</a></li>
                 <li className="font-semibold hover:text-purple-200 transition"><a href="/jobs">Job Board</a></li>
-                <li className="font-semibold hover:text-purple-200 transition"><a href="/projects">Donate</a></li>
+                <li className="font-semibold hover:text-purple-200 transition"><a href="/donations">Donate</a></li>
                 <li className="font-semibold hover:text-purple-200 transition"><a href="/events">Events</a></li>
                 <li>
                     <button onClick={() => setOpen(!open)}>
@@ -31,7 +35,9 @@ const Navbar = () => {
                     {open && (
                         <div className="absolute right-0 mt-2 w-44 text-black bg-purple-100 shadow rounded">
                             <ul className="text-sm">
-                                <li className="px-4 py-3 hover:bg-purple-200 cursor-pointer">Profile</li>
+                                <li 
+                                    onClick={handleProfileClick}
+                                    className="px-4 py-3 hover:bg-purple-200 cursor-pointer">Profile</li>
                                 <li
                                     onClick={handleLogout}
                                     className="px-4 py-3 hover:bg-purple-200 cursor-pointer"
