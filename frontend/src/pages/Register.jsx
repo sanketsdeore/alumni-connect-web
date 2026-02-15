@@ -29,7 +29,9 @@ function Register() {
         try {
             const res = await API.post("/auth/register", form);
 
+            localStorage.setItem("id", res.data.user.id);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("role", res.data.user.role);
 
             const user = res.data.user;
 
