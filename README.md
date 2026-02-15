@@ -170,10 +170,5 @@ VITE_API_URL=http://localhost:5000/api
 
 ## Contributors
 
+* Abhinandan Gaikwad
 * Sanket Deore
-
----
-
-## License
-
-This project is for educational and learning purposes.
