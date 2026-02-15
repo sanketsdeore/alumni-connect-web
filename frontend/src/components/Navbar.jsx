@@ -19,7 +19,7 @@ const Navbar = () => {
     return (
         <nav className="navbar fixed top-0 left-0 right-0 flex items-center justify-between px-8 p-2 bg-purple-800 text-white">
             <div className="flex logo items-center">
-                <img className='rounded-full' width={48} src="logo.png" alt="" />
+                <img className='rounded-full brightness-0 invert' width={48} src="logo.png" alt="" />
                 <span className="ml-2 font-bold text-lg">Alumni Connect</span>
             </div>
             <ul className="nav-links flex space-x-6 items-center">
