@@ -38,7 +38,7 @@ The platform enables alumni to contribute back to their college community while 
 
 ### Projects / Donations
 
-* Alumni-led initiatives and projects
+* Student/Alumni-led initiatives and projects
 * Donation links supported
 
 ---
