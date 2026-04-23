@@ -1,4 +1,4 @@
-import prisma from "../prisma/client.js";
+import prisma from "../../prisma/client.js";
 
 // Get all projects
 export const getAllProjects = async (req, res) => {
