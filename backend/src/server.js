@@ -24,14 +24,14 @@ app.get("/", (req, res) => {
   res.send("API running");
 });
 
-app.use("//auth", authRoutes);
-app.use("//alumni", alumniRoutes);
-app.use("//users", userRoutes);
-app.use("//stories", storyRoutes);
-app.use("//openings", jobRoutes);
-app.use("//donations", donationRoutes);
-app.use("//events", eventRoutes);
-app.use("//profile", profileRoutes);
+app.use("/auth", authRoutes);
+app.use("/alumni", alumniRoutes);
+app.use("/users", userRoutes);
+app.use("/stories", storyRoutes);
+app.use("/openings", jobRoutes);
+app.use("/donations", donationRoutes);
+app.use("/events", eventRoutes);
+app.use("/profile", profileRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
