@@ -21,17 +21,17 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("API running");
+  res.send( running");
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/alumni", alumniRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/stories", storyRoutes);
-app.use("/api/openings", jobRoutes);
-app.use("/api/donations", donationRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/profile", profileRoutes);
+app.use("/auth", authRoutes);
+app.use("/alumni", alumniRoutes);
+app.use("/users", userRoutes);
+app.use("/stories", storyRoutes);
+app.use("/openings", jobRoutes);
+app.use("/donations", donationRoutes);
+app.use("/events", eventRoutes);
+app.use("/profile", profileRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
